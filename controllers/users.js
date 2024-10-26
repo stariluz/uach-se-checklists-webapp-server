@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('../db');
+const { User,Checklist} = require('../db');
 const { where } = require('sequelize');
 
 function createUser(req, res, next) {
@@ -38,7 +38,7 @@ function deleteUser(req, res, next) {
 }
 
 function getUserChecklists() {
-    res.send(`GET => /users/${req.params.user_id}/checklists/`);
-}
+    User.findAll({include:['checklist']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
+    }
 
 module.exports = {createUser, getUser, getUsers, deleteUser, getUserChecklists}
