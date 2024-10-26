@@ -1,31 +1,43 @@
-const express = require('express')
+const express = require('express');
+const { TaskGroup } = require('../db');
+const { where } = require('sequelize');
 
-function createTasksGroup(req, res, next) {
-    res.send(`POST => /tasks-groups/create/ => ${req.body.checklist_id} ${req.body.title}`);
+function createTaskGroup(req, res, next) {
+    const title = req.body.title;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    TaskGroup.create({
+        title : title,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function getTasksGroup(req, res, next) {
-    res.send(`GET => /tasks-groups/${req.params.tasks_group_id}`);
+function getTaskGroup(req, res, next) {
+    const CheckGuest_id = req.params.TaskGroup_id;
+    TaskGroup.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getTasksGroups() {
-    res.send(`GET => /tasks-groups/list`);
+function getTaskGroups(req, res, next) {
+    TaskGroup.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updateTasksGroup() {
-    res.send(`PATCH => /tasks-groups/${req.params.tasks_group_id}/update => ${req.body.checklist_id} ${req.body.title}`);
+function deleteTaskGroup(req, res, next) {
+    const TaskGroup_id = req.params.TaskGroup_id;
+    TaskGroup.destroy({ where: {id: TaskGroup_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replaceTasksGroup() {
-    res.send(`PUT => /tasks-groups/${req.params.tasks_group_id}/replace => ${req.body.checklist_id} ${req.body.title}`);
+function getTasksToGroup() {
+    TaskGroup.findAll({include:['task']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
 }
 
-function deleteTasksGroup() {
-    res.send(`DELETE => /tasks-groups/${req.params.tasks_group_id}/delete`);
-}
 
-function getTasksTasksGroup() {
-    res.send(`GET => /tasks-groups/${req.params.tasks_group_id}/tasks`);
-}
-
-module.exports = {createTasksGroup, getTasksGroup, getTasksGroups, updateTasksGroup, replaceTasksGroup, deleteTasksGroup, getTasksTasksGroup}
+module.exports = {createTaskGroup, getTaskGroup, getTaskGroups, deleteTaskGroup,getTasksToGroup}

@@ -1,31 +1,36 @@
-const express = require('express')
+const express = require('express');
+const { ChecklistGuest} = require('../db');
+const { where } = require('sequelize');
 
-function createChecklistGuest(req, res, next) {
-    res.send(`POST => /checklists-guests/create/ => ${req.body.checklist_id} ${req.body.user_id} ${req.body.rol_id}`);
+function createGuestToChecklist(req, res, next) {
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    ChecklistGuest.create({
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getChecklistGuest(req, res, next) {
-    res.send(`GET => /checklists-guests/${req.params.checklist_guest_id}`);
+    const CheckGuest_id = req.params.ChecklistGuest_id;
+    ChecklistGuest.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getChecklistsGuests() {
-    res.send(`GET => /checklists-guests/list`);
+function getChecklistGuests(req, res, next) {
+    ChecklistGuest.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updateChecklistGuest() {
-    cres.send(`PATCH => /checklists-guests/${req.params.checklist_guest_id}/update => ${req.body.checklist_id} ${req.body.user_id} ${req.body.rol_id}`);
+function deleteChecklistGuest(req, res, next) {
+    const ChecklistGuest_id = req.params.ChecklistGuest_id;
+    ChecklistGuest.destroy({ where: {id: ChecklistGuest_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replaceChecklistGuest() {
-    res.send(`PUT => /checklists-guests/${req.params.checklist_guest_id}/replace => ${req.body.checklist_id} ${req.body.user_id} ${req.body.rol_id}`);
-}
-
-function deleteChecklistGuest() {
-    res.send(`DELETE => /checklists-guests/${req.params.checklist_guest_id}/delete`);
-}
-
-function getChecklistGuestUsers() {
-    res.send(`GET => /checklists-guests/${req.params.checklist_guest_id}/users`);
-}
-
-module.exports = {createChecklistGuest, getChecklistGuest, getChecklistsGuests, updateChecklistGuest, replaceChecklistGuest, deleteChecklistGuest, getChecklistGuestUsers}
+module.exports = {createGuestToChecklist, getChecklistGuest, getChecklistGuests, deleteChecklistGuest}

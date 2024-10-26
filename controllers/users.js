@@ -41,4 +41,7 @@ function getUserChecklists() {
     User.findAll({include:['checklist']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
     }
 
+
+
+
 module.exports = {createUser, getUser, getUsers, deleteUser, getUserChecklists}

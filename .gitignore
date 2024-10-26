@@ -1,2 +1,4 @@
 # Paquetes y dependencias
 node_modules
+package-lock.json
+package.json

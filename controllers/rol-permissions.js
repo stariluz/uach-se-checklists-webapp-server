@@ -1,19 +1,36 @@
-const express = require('express')
+const express = require('express');
+const { RolPermission} = require('../db');
+const { where } = require('sequelize');
 
 function createRolPermission(req, res, next) {
-    res.send(`POST => /rol-permissions/create/ => ${req.body.rol_id} ${req.body.permission_id}`);
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    RolPermission.create({
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getRolPermission(req, res, next) {
-    res.send(`GET => /rol-permissions/${req.params.rol_permission_id}`);
+    const CheckGuest_id = req.params.RolPermission_id;
+    RolPermission.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getRolPermissions() {
-    res.send(`GET => /rol-permissions/list`);
+function getRolPermissions(req, res, next) {
+    RolPermission.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function deleteRolPermission() {
-    res.send(`DELETE => /rol-permissions/${req.params.rol_permission_id}/delete`);
+function deleteRolPermission(req, res, next) {
+    const RolPermission_id = req.params.RolPermission_id;
+    RolPermission.destroy({ where: {id: RolPermission_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 module.exports = {createRolPermission, getRolPermission, getRolPermissions, deleteRolPermission}

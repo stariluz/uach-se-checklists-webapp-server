@@ -1,27 +1,39 @@
-const express = require('express')
+const express = require('express');
+const { Permission } = require('../db');
+const { where } = require('sequelize');
 
 function createPermission(req, res, next) {
-    res.send(`POST => /permissions/create/ => ${req.body.description}`);
+    const description = req.body.description;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    Permission.create({
+        description : description,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getPermission(req, res, next) {
-    res.send(`GET => /permissions/${req.params.permission_id}`);
+    const CheckGuest_id = req.params.Permission_id;
+    Permission.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getPermissions() {
-    res.send(`GET => /permissions/list`);
+function getPermissions(req, res, next) {
+    Permission.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updatePermission() {
-    cres.send(`PATCH => /permissions/${req.params.permission_id}/update => ${req.body.description}`);
+function deletePermission(req, res, next) {
+    const Permission_id = req.params.Permission_id;
+    Permission.destroy({ where: {id: Permission_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replacePermission() {
-    res.send(`PUT => /permissions/${req.params.permission_id}/replace => ${req.body.description}`);
-}
 
-function deletePermission() {
-    res.send(`DELETE => /permissions/${req.params.permission_id}/delete`);
-}
-
-module.exports = {createPermission, getPermission, getPermissions, updatePermission, replacePermission, deletePermission}
+module.exports = {createPermission, getPermission, getPermissions, deletePermission}

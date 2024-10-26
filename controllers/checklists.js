@@ -1,35 +1,48 @@
-const express = require('express')
+const express = require('express');
+const { Checklist,Task} = require('../db');
+const { where } = require('sequelize');
 
 function createChecklist(req, res, next) {
-    res.send(`POST => /checklists/create/ => ${req.body.user_id} ${req.body.title} ${req.body.date} ${req.body.completeness}`);
+    const title = req.body.title;
+    const due_date = req.body.due_date;
+    const completeness = req.body.completeness;
+    const url = req.body.url;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    Checklist.create({
+        title: title,
+        due_date: due_date,
+        completeness: completeness,
+        url: url,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getChecklist(req, res, next) {
-    res.send(`GET => /checklists/${req.params.checklist_id}`);
+    const CheckGuest_id = req.params.Checklist_id;
+    Checklist.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getChecklists() {
-    res.send(`GET => /checklists/list`);
+function getChecklists(req, res, next) {
+    Checklist.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updateChecklist() {
-    cres.send(`PATCH => /checklists/${req.params.checklist_id}/update => ${req.body.title} ${req.body.due_date} ${req.body.completeness}`);
+function deleteChecklist(req, res, next) {
+    const Checklist_id = req.params.Checklist_id;
+    Checklist.destroy({ where: {id: Checklist_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replaceChecklist() {
-    res.send(`PUT => /checklists/${req.params.checklist_id}/replace => ${req.body.title} ${req.body.due_date} ${req.body.completeness}`);
-}
+function getChecklistTask() {
+    Checklist.findAll({include:['task']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
+    }
 
-function deleteChecklist() {
-    res.send(`DELETE => /checklists/${req.params.checklist_id}/delete`);
-}
-
-function getTasks() {
-    res.send(`GET => /checklists/${req.params.checklist_id}/tasks`);
-}
-
-function getTasksGroups() {
-    res.send(`GET => /checklists/${req.params.checklist_id}/tasks-groups`);
-}
-
-module.exports = {createChecklist, getChecklist, getChecklists, updateChecklist, replaceChecklist, deleteChecklist, getTasks, getTasksGroups}
+module.exports = {createChecklist, getChecklist, getChecklists, deleteChecklist, getChecklistTask}

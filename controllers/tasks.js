@@ -1,27 +1,43 @@
-const express = require('express')
+const express = require('express');
+const { Task } = require('../db');
+const { where } = require('sequelize');
 
-function createTasks(req, res, next) {
-    res.send(`POST => /tasks/create/ => ${req.body.checklist_id} ${req.body.task_group_id} ${req.body.title} ${req.body.due_date}`);
+function createTask(req, res, next) {
+    const title = req.body.title;
+    const due_date = req.body.due_date;
+    const completed_at = req.body.completed_at;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    Task.create({
+        title : title,
+        due_date : due_date,
+        completed_at : completed_at,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getTask(req, res, next) {
-    res.send(`GET => /tasks/${req.params.task_id}`);
+    const CheckGuest_id = req.params.Task_id;
+    Task.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getTasks() {
-    res.send(`GET => /tasks/list`);
+function getTasks(req, res, next) {
+    Task.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updateTasks() {
-    res.send(`PATCH => /tasks/${req.params.task_id}/update => ${req.body.task_group_id} ${req.body.title} ${req.body.due_date} ${req.body.completed_at} ${req.body.completed_by}`);
+function deleteTask(req, res, next) {
+    const Task_id = req.params.Task_id;
+    Task.destroy({ where: {id: Task_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replaceTasks() {
-    res.send(`PUT => /tasks/${req.params.task_id}/replace => ${req.body.task_group_id} ${req.body.title} ${req.body.due_date} ${req.body.completed_at} ${req.body.completed_by}`);
-}
 
-function deleteTasks() {
-    res.send(`DELETE => /tasks/${req.params.task_id}/delete`);
-}
-
-module.exports = {createTasks, getTask, getTasks, updateTasks, replaceTasks, deleteTasks}
+module.exports = {createTask, getTask, getTasks, deleteTask}

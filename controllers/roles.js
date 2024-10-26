@@ -1,31 +1,39 @@
-const express = require('express')
+const express = require('express');
+const { Rol } = require('../db');
+const { where } = require('sequelize');
 
-function createRole(req, res, next) {
-    res.send(`POST => /roles/create/ => ${req.body.title}`);
+function createRol(req, res, next) {
+    const title = req.body.title;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    Rol.create({
+        title : title,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function getRole(req, res, next) {
-    res.send(`GET => /roles/${req.params.rol_id}`);
+function getRol(req, res, next) {
+    const CheckGuest_id = req.params.Rol_id;
+    Rol.findByPk(CheckGuest_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getRoles() {
-    res.send(`GET => /roles/list`);
+function getRols(req, res, next) {
+    Rol.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function updateRole() {
-    cres.send(`PATCH => /roles/${req.params.rol_id}/update => ${req.body.title}`);
+function deleteRol(req, res, next) {
+    const Rol_id = req.params.Rol_id;
+    Rol.destroy({ where: {id: Rol_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
-function replaceRole() {
-    res.send(`PUT => /roles/${req.params.rol_id}/replace => ${req.body.title}`);
-}
 
-function deleteRole() {
-    res.send(`DELETE => /roles/${req.params.rol_id}/delete`);
-}
-
-function getRolePermissions() {
-    res.send(`GET => /roles/${req.params.rol_id}/permissions`);
-}
-
-module.exports = {createRole, getRole, getRoles, updateRole, replaceRole, deleteRole, getRolePermissions}
+module.exports = {createRol, getRol, getRols, deleteRol}
