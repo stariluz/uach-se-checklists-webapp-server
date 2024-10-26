@@ -1,5 +1,5 @@
 const express = require('express');
-const { TaskGroup } = require('../db');
+const { TaskGroup, Task } = require('../db');
 const { where } = require('sequelize');
 
 function createTaskGroup(req, res, next) {
