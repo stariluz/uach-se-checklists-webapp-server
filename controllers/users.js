@@ -1,19 +1,40 @@
-const express = require('express')
+const express = require('express');
+const { User } = require('../db');
+const { where } = require('sequelize');
 
 function createUser(req, res, next) {
-    res.send(`POST => /users/create/ => ${req.body.email} ${req.body.google-authoization}`);
+    const google_token = req.body.google_token;
+    const email = req.body.email;
+    const created_at = req.body.created_at;
+    const updated_at = req.body.updated_at;
+
+    User.create({
+        google_token: google_token,
+        email: email,
+        created_at: created_at,
+        updated_at: updated_at
+    }).then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getUser(req, res, next) {
-    res.send(`GET => /users/${req.params.user_id}`);
+    const user_id = req.params.user_id;
+    User.findByPk(user_id)  
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function getUsers() {
-    res.send(`GET => /users/:user_id/list/`);
+function getUsers(req, res, next) {
+    User.findAll()
+            .then(object => res.json(object))
+            .catch(ex => res.send(ex));
 }
 
-function deleteUser() {
-    res.send(`DELETE => /users/${req.params.user_id}/delete/ => ${req.body.email}`);
+function deleteUser(req, res, next) {
+    const user_id = req.params.user_id;
+    User.destroy({ where: {id: user_id}})
+    .then(object => res.json(object))
+    .catch(ex => res.send(ex));
 }
 
 function getUserChecklists() {

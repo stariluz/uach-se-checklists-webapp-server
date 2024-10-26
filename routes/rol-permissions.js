@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/rol-permissions');
 
-router.post('/create', controller.create);
+router.post('/create', controller.createRolPermission);
 
-router.get('/:rol_permission_id', );
+router.get('/:rol_permission_id', controller.getRolPermission);
 
-router.get('/list', );
+router.get('/list', controller.getRolPermissions);
 
-router.delete('/:rol_permission_id/delete', );
+router.delete('/:rol_permission_id/delete', controller.deleteRolPermission);
 
 module.exports = router;
