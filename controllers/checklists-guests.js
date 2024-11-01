@@ -14,8 +14,8 @@ function createGuestToChecklist(req, res, next) {
 }
 
 function getChecklistGuest(req, res, next) {
-    const CheckGuest_id = req.params.ChecklistGuest_id;
-    ChecklistGuest.findByPk(CheckGuest_id)  
+    const ChecklistGuest_id = req.params.ChecklistGuest_id;
+    ChecklistGuest.findByPk(ChecklistGuest_id)  
             .then(object => res.json(object))
             .catch(ex => res.send(ex));
 }

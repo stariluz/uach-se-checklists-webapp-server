@@ -32,7 +32,7 @@ app.use('/checklists', checklistsRouter);
 app.use('/permissions', permissionsRouter);
 app.use('/rol-permissions', rolPermissionsRouter);
 app.use('/roles', rolesRouter);
-app.use('tasks-groups', tasksGroupsRouter);
+app.use('/tasks-groups', tasksGroupsRouter);
 app.use('/tasks', tasksRouter);
 
 app.use(function(req, res, next) {

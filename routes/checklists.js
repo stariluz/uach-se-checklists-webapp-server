@@ -8,14 +8,14 @@ router.get('/:checklist_id', controller.getChecklist);
 
 router.get('/list', controller.getChecklists);
 
-router.patch('/:checklist_id/update', controller.updateChecklist);
+//router.patch('/:checklist_id/update', controller.updateChecklist);
 
-router.put('/:checklist_id/replace', controller.replaceChecklist);
+//router.put('/:checklist_id/replace', controller.replaceChecklist);
 
 router.delete('/:checklist_id/delete', controller.deleteChecklist);
 
-router.get('/:checklist_id/tasks', controller.getTasks);
+//router.get('/:checklist_id/tasks', controller.getTasks);
 
-router.get('/:checklist_id/tasks-groups', controller.getTasksGroups);
+//router.get('/:checklist_id/tasks-groups', controller.getTasksGroups);
 
 module.exports = router;

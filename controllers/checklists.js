@@ -3,6 +3,7 @@ const { Checklist,Task} = require('../db');
 const { where } = require('sequelize');
 
 function createChecklist(req, res, next) {
+    const user_id = req.body.user_id;
     const title = req.body.title;
     const due_date = req.body.due_date;
     const completeness = req.body.completeness;
@@ -11,6 +12,7 @@ function createChecklist(req, res, next) {
     const updated_at = req.body.updated_at;
 
     Checklist.create({
+        user_id: user_id,
         title: title,
         due_date: due_date,
         completeness: completeness,
@@ -43,6 +45,6 @@ function deleteChecklist(req, res, next) {
 
 function getChecklistTask() {
     Checklist.findAll({include:['task']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
-    }
+}
 
 module.exports = {createChecklist, getChecklist, getChecklists, deleteChecklist, getChecklistTask}

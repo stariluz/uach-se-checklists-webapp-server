@@ -37,11 +37,8 @@ function deleteUser(req, res, next) {
     .catch(ex => res.send(ex));
 }
 
-function getUserChecklists() {
+function getUserChecklists(req, res, next) {
     User.findAll({include:['checklist']}).then(objects => res.json(objects)).catch(ex => res.send(ex));
-    }
-
-
-
+}
 
 module.exports = {createUser, getUser, getUsers, deleteUser, getUserChecklists}
