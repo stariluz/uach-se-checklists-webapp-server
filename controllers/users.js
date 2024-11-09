@@ -5,14 +5,14 @@ const { where } = require('sequelize');
 function createUser(req, res, next) {
     const google_token = req.body.google_token;
     const email = req.body.email;
-    const created_at = req.body.created_at;
-    const updated_at = req.body.updated_at;
+    //const created_at = req.body.created_at;
+    //const updated_at = req.body.updated_at;
 
     User.create({
         google_token: google_token,
         email: email,
-        created_at: created_at,
-        updated_at: updated_at
+        //created_at: created_at,
+        //updated_at: updated_at
     }).then(object => res.json(object))
     .catch(ex => res.send(ex));
 }

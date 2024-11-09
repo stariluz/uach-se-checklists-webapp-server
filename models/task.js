@@ -4,8 +4,8 @@ module.exports = (sequelize, type) => {
         title: type.STRING,
         due_date: type.DATE,
         completed_at: type.DATE,
-        created_at: type.DATE,
-        updated_at: type.DATE
+        //created_at: type.DATE,
+        //updated_at: type.DATE
     });
     return Task;
 }

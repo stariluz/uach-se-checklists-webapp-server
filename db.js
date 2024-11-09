@@ -11,10 +11,19 @@ const userModel = require('./models/user');
 const user = require('./models/user');
 const { use } = require('./routes');
 
+
+
+const sequelize = new Sequelize('video-club','root','abcd1234',{
+    host: '127.0.0.1', //Puede cambiar, solo que nos lo debe de brindar dicha BD
+    dialect: 'mysql'
+});
+/*
 const sequelize = new Sequelize('SLLTC', 'root', 'Emiliano18@', {
     host: '127.0.0.1',
     dialect: 'mysql'
 });
+
+*/
 
 
 const ChecklistGuest = checklistGuestModel(sequelize, Sequelize);
@@ -29,7 +38,7 @@ const User = userModel(sequelize, Sequelize);
 User.hasMany(Checklist, {as:'checklist'});
 Checklist.belongsTo(User, {as: 'user'});
 User.hasMany(ChecklistGuest, {as:'checklistGuest'});
-ChecklistGuest.belongsTo(user, {as:'user'});
+ChecklistGuest.belongsTo(User, {as:'user'});
 Checklist.hasMany(Task, {as:'task'});
 Task.belongsTo(Checklist, {as: 'checklist'});
 Checklist.hasMany(TaskGroup, {as:'taskgroup'});

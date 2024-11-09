@@ -18,5 +18,9 @@
     "pug": "^3.0.3",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "description": "### Instalar proyecto",
+  "main": "app.js",
+  "author": "",
+  "license": "ISC"
 }

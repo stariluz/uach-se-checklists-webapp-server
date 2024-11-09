@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/tasks-groups');
 
-//router.post('/create', controller.createTasksGroup);
+router.post('/', controller.createTaskGroup);
 
-//router.get('/:tasks_group_id', controller.getTasksGroup);
+router.get('/:tasks_group_id', controller.getTaskGroup);
 
-//router.get('/list', controller.getTasksGroups);
+router.get('/', controller.getTaskGroups);
 
-//router.patch('/:tasks_group_id/update', controller.updateTasksGroup);
+router.patch('/:tasks_group_id', controller.updateTaskGroup);
 
-//router.put('/:tasks_group_id/replace', controller.replaceTasksGroup);
+router.put('/:tasks_group_id', controller.replaceTaskGroup);
 
-//router.delete('/:tasks_group_id/delete', controller.deleteTasksGroup);
+router.delete('/:tasks_group_id', controller.deleteTaskGroup);
 
-//router.get('/:tasks_group_id/tasks', controller.getTasksTasksGroup);
+router.get('/tasks/:tasks_group_id', controller.getTasksGroup);
 
 module.exports = router;
