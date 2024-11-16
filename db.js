@@ -13,7 +13,7 @@ const { use } = require('./routes');
 
 
 
-const sequelize = new Sequelize('video-club','root','abcd1234',{
+const sequelize = new Sequelize('videoclub','root','Emiliano18@',{
     host: '127.0.0.1', //Puede cambiar, solo que nos lo debe de brindar dicha BD
     dialect: 'mysql'
 });
@@ -53,7 +53,7 @@ Permission.hasMany(RolPermission, {as: 'rolpermission'});
 RolPermission.belongsTo(Permission, {as: 'permission'});
 
 sequelize.sync({
-    force: true
+    force: false
 }).then(()=>{
     console.log("Base de datos sincronizada correctamente");
 })

@@ -1,18 +1,19 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const { User,Checklist} = require('../db');
 const { where } = require('sequelize');
 
-function createUser(req, res, next) {
-    const google_token = req.body.google_token;
-    const email = req.body.email;
-    //const created_at = req.body.created_at;
-    //const updated_at = req.body.updated_at;
+async function createUser(req, res, next) {
+    let google_token = req.body.google_token;
+    let email = req.body.email;
+    let salt = await bcrypt.genSalt(10);
+
+    const googleTokenHash = await bcrypt.hash(google_token, salt);
 
     User.create({
-        google_token: google_token,
+        google_token: googleTokenHash,
         email: email,
-        //created_at: created_at,
-        //updated_at: updated_at
+        salt: salt
     }).then(object => res.json(object))
     .catch(ex => res.send(ex));
 }
