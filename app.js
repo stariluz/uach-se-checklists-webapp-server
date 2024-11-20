@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const {expressjwt} = require('express-jwt');
 const jwtKey = "acf9a3305987428411d54a7d4b2fdff6";
 
@@ -27,6 +28,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressjwt({secret:jwtKey, algorithms:['HS256']}).unless({path:["/login", "/users"]}));
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
