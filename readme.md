@@ -24,7 +24,7 @@ Ahora abre el navegador en `http://localhost:3000/`. Deberás ver la siguiente p
 
 | Route           | Method | Body                                             | Code | Response                       |
 | --------------- | ------ | ------------------------------------------------ | ---- | ------------------------------ |
-| `/auth/log-in`  | POST   | `gogle-authorization:String`                    | 200  | jwttoken {data:userSanitizied} |
+| `/auth/log-in`  | POST   | `google-authorization:String`                    | 200  | jwttoken {data:userSanitizied} |
 | `/auth/log-out` | POST   |                                                  | 200  |                                |
 | `/auth/sign-up` | POST   | `email:String`<br/>`google-authorization:String` | 200  | jwttoken {data:userSanitizied} |
 
@@ -133,5 +133,8 @@ encabezado el token de autenticación.
 | `/:rol_permission_id`        | GET    | `rol_permission_id:int` |                                      | `rol_permission:RolPermissionPopulated` |
 | `/list`                      | GET    |                         |                                      | `roles_permissions:RolPermission[]`     |
 | `/:rol_permission_id/delete` | DELETE | `rol_permission_id:int` |                                      | `rol_permission:RolPermission`          |
+<<<<<<< HEAD
+=======
 
 # Ejemplo
+>>>>>>> b98fcda1254f5050953f362a33738d5a6b1fc186
