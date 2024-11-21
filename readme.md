@@ -133,3 +133,8 @@ encabezado el token de autenticación.
 | `/:rol_permission_id`        | GET    | `rol_permission_id:int` |                                      | `rol_permission:RolPermissionPopulated` |
 | `/list`                      | GET    |                         |                                      | `roles_permissions:RolPermission[]`     |
 | `/:rol_permission_id/delete` | DELETE | `rol_permission_id:int` |                                      | `rol_permission:RolPermission`          |
+<<<<<<< HEAD
+=======
+
+# Ejemplo
+>>>>>>> b98fcda1254f5050953f362a33738d5a6b1fc186
