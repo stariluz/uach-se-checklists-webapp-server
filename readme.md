@@ -9,9 +9,42 @@ npm install
 ```
 
 ### Ejecutar proyecto
+Crea un archivo `.env.docker` con los siguientes datos:
+```sh
+MYSQL_ROOT_PASSWORD=contrasena_de_root
+```
+Ahora crea el contenedor.
+```sh
+docker stop slltc-db
+docker rm slltc-db
+docker run -dti --name slltc-db \
+--env-file ".env.docker" \
+-p3306:3306 \
+--hostname slltc-mysql \
+-v slltc-data:/var/lib/mysql \
+mysql
+```
+Entras a la consola `mysql` del contenedor.
+```sh
+docker exec -it slltc-db mysql -p
+```
+Y creas la base de datos en la que trabajaremos.
+```sh
+create database slltc;
+```
+Crea un `.env` con los siguientes datos:
+```
+DB_NAME=slltc
+DB_USER=root
+DB_PASSWORD=contrasena_de_root
+DB_HOST=localhost
+DB_PORT=3306
+DB_DIALECT=mysql
+```
 ```sh
 npm run start
 ```
+
 Ahora abre el navegador en `http://localhost:3000/`. Deberás ver la siguiente pantalla
 ![Window](./assets/img/window001.png)
 
