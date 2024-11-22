@@ -8,6 +8,8 @@ router.get('/:taskId', controller.getTask);
 
 router.get('/list', controller.getTasks);
 
+router.patch('/changeComplete/:taskId', controller.changeCompleteTask);
+
 router.patch('/:taskId', controller.updateTasks);
 
 router.put('/:taskId', controller.replaceTasks);
