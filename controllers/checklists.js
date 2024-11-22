@@ -4,36 +4,72 @@ const { where } = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 function createChecklist(req, res, next) {
-    //TO DO: Se necesita definir la relacion de user_id con user
     const title = req.body.title;
     const due_date = req.body.due_date;
     const completeness = req.body.completeness;
     const url = req.body.url;
-    //const created_at = req.body.created_at;
-    //const updated_at = req.body.updated_at;
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate de que JWT_SECRET está configurado.
+    const userId = decoded.id; // Asume que el ID del usuario está en el payload del token.
 
     Checklist.create({
         title: title,
         due_date: due_date,
         completeness: completeness,
-        url: url
-        //created_at: created_at,
-        //updated_at: updated_at
+        url: url,
+        userId: userId,
     }).then(object => res.json(object))
         .catch(ex => res.send(ex));
 }
 
-function getChecklist(req, res, next) {
-    const checklist_id = req.params.Checklist_id;
-    Checklist.findByPk(checklist_id)
-        .then(object => res.json(object))
-        .catch(ex => res.send(ex));
+async function getChecklist(req, res, next) {
+    console.log("ENTRA")
+    const checklist_id = req.params.checklist_id;
+    const user_id = req.params.user_id;
+
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate de que JWT_SECRET está configurado.
+    const session_user_id = decoded.id; // Asume que el ID del usuario está en el payload del token.
+
+    const checklist = await Checklist.findByPk(checklist_id, {
+        include: [
+            {
+                model: ChecklistGuest,
+                as: 'guest',
+                include: [{
+                    model: User, as: 'user'
+                }],
+            },
+        ],
+    });
+
+    if (!checklist) {
+        console.error('Checklist no encontrada'); 
+        return res.status(404).json({ msg: 'Checklist no encontrada' });
+    }
+
+    // Verificar si el usuario es el propietario
+    if (checklist.userId === session_user_id) {
+        console.error();
+        return res.status(200).json({ checklist });
+    }
+
+    // Verificar si el usuario está invitado
+    const guest = checklist.guest.find((guest) => guest.user.id === user_id);
+    if (guest) {
+        return res.status(200).json({ checklist }); 
+    }
+
+    // Si no es propietario ni invitado
+    return res.status(403).json({ msg: 'No tienes acceso a esta checklist' });
 }
 
 function getChecklists(req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(' ')[1];
-    console.log(token);
+
     try {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate de que JWT_SECRET está configurado.
