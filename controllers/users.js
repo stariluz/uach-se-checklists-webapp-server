@@ -5,6 +5,7 @@ const { where } = require('sequelize');
 
 async function createUser(req, res, next) {
     let google_token = req.body.google_token;
+    let picture_url = req.body.picture_url;
     let email = req.body.email;
     let salt = await bcrypt.genSalt(10);
 
@@ -12,6 +13,7 @@ async function createUser(req, res, next) {
 
     User.create({
         google_token: googleTokenHash,
+        picture_url: picture_url,
         email: email,
         salt: salt
     }).then(object => res.json(object))

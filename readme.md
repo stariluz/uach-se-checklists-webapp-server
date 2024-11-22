@@ -15,6 +15,7 @@ MYSQL_ROOT_PASSWORD=contrasena_de_root
 ```
 Ahora crea el contenedor.
 ```sh
+docker rm slltc-data
 docker stop slltc-db
 docker rm slltc-db
 docker run -dti --name slltc-db \

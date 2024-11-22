@@ -5,7 +5,8 @@ module.exports = (sequelize, type) => {
             autoIncrement: true,
             primaryKey: true
         },
-        google_token: type.STRING, // No parece ser necesario aquí si usas `password`
+        picture_url: type.STRING,
+        google_token: type.STRING,
         email: {
             type: type.STRING,
             allowNull: false,
@@ -14,7 +15,7 @@ module.exports = (sequelize, type) => {
         // Opcional: Si usas un campo separado para el `salt`
         salt: type.STRING
     }, {
-        timestamps: true // Si deseas incluir createdAt y updatedAt automáticamente
+        timestamps: true 
     });
 
     return User;

@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const {expressjwt} = require('express-jwt');
+const { expressjwt } = require('express-jwt');
 const jwtKey = "acf9a3305987428411d54a7d4b2fdff6";
 
 const indexRouter = require('./routes/index');
@@ -27,12 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressjwt({secret:jwtKey, algorithms:['HS256']}).unless({path:["/login", "/users"]}));
+app.use(expressjwt({ secret: jwtKey, algorithms: ['HS256'] }).unless({ path: ["/login", "/signup", "/logout"] }));
 
+// app.options('*', cors());
 app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: ['http://localhost:5173',],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }))
 
 app.use('/', indexRouter);
@@ -45,11 +47,11 @@ app.use('/roles', rolesRouter);
 app.use('/tasks-groups', tasksGroupsRouter);
 app.use('/tasks', tasksRouter);
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 

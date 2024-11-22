@@ -21,18 +21,6 @@ const sequelize = new Sequelize(
         dialect: process.env.DB_DIALECT
     }
 );
-// const sequelize = new Sequelize('videoclub','root','Emiliano18@',{
-//     host: '127.0.0.1', //Puede cambiar, solo que nos lo debe de brindar dicha BD
-//     dialect: 'mysql'
-// });
-/*
-const sequelize = new Sequelize('SLLTC', 'root', 'Emiliano18@', {
-    host: '127.0.0.1',
-    dialect: 'mysql'
-});
-
-*/
-
 
 const ChecklistGuest = checklistGuestModel(sequelize, Sequelize);
 const Checklist = checklistModel(sequelize, Sequelize);
