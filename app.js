@@ -27,7 +27,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressjwt({ secret: jwtKey, algorithms: ['HS256'] }).unless({ path: ["/login", "/signup", "/logout"] }));
+app.use(expressjwt({ secret: jwtKey, algorithms: ['HS256'] }).unless({
+    path: [
+        "/login",
+        "/signup",
+        "/logout",
+    ]
+}));
 
 // app.options('*', cors());
 app.use(cors({

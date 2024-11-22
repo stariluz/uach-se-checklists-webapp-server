@@ -12,16 +12,14 @@ async function login(req, res, next) {
         const email = req.body.email;
         const google_token = req.body.google_token;
 
-        console.log(email, google_token);
-
         const user = await User.findOne({ where: { email: email } });
 
         if (user) {
             const result = await bcrypt.compare(google_token, user.google_token);
 
             if (result) {
-                console.log("Token válido");
-                const token = jwt.sign({ id: user.id }, 'acf9a3305987428411d54a7d4b2fdff6', { expiresIn: '14d' });
+                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
+                
                 return res.status(200).json({
                     msg: "Sesión iniciada correctamente",
                     token: token,
@@ -38,7 +36,7 @@ async function login(req, res, next) {
                 });
             }
         } else {
-            console.log("Usuario no encontrado");
+            console.error("Usuario no encontrado");
             return res.status(404).json({
                 msg: "Usuario no encontrado",
                 obj: null
@@ -71,7 +69,7 @@ async function signup(req, res, next) {
                 });
 
                 if (user) {
-                    const token = jwt.sign({ id: user.id }, 'acf9a3305987428411d54a7d4b2fdff6', { expiresIn: '14d' });
+                    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
                     return res.status(200).json({
                         msg: "Cuenta creada correctamente",
                         token: token,
@@ -83,7 +81,7 @@ async function signup(req, res, next) {
                     });
                 }
             } else {
-                console.log("Usuario ya existente:", existentUser);
+                console.error("Usuario ya existente:", existentUser);
                 return res.status(500).json({
                     msg: "Usuario ya existente",
                     obj: null
