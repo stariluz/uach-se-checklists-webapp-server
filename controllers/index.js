@@ -19,7 +19,7 @@ async function login(req, res, next) {
 
             if (result) {
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
-                
+
                 return res.status(200).json({
                     msg: "Sesión iniciada correctamente",
                     token: token,
@@ -119,4 +119,24 @@ async function logout(req, res, next) {
     }
 }
 
-module.exports = { home, login, signup, logout };
+
+const refreshToken = async (req, res) => {
+    const prevToken = req.body.token;
+    const decoded = jwt.verify(prevToken, process.env.JWT_SECRET); // Asegúrate de que JWT_SECRET está configurado.
+    const userId = decoded.id; // Asume que el ID del usuario está en el payload del token.
+    const user = await User.findByPk(userId);
+    if (!user) return res.sendStatus(403); //Forbidden 
+    
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
+    return res.status(200).json({
+        msg: "Cuenta creada correctamente",
+        token: token,
+        user: {
+            id: user.id,
+            picture_url: user.picture_url,
+            email: user.email,
+        }
+    });
+}
+
+module.exports = { home, login, signup, logout, refreshToken };

@@ -19,7 +19,7 @@ async function createChecklist(req, res, next) {
         // Crear el Checklist
         const checklist = await Checklist.create({
             title: title,
-            due_date: due_date||null,
+            due_date: due_date || null,
             completeness: completeness,
             userId: userId,
         }, { transaction: t });
@@ -55,7 +55,7 @@ async function getChecklist(req, res, next) {
             {
                 model: ChecklistGuest,
                 as: 'guest',
-                where: { userId },
+                where: { userId: session_userId },
                 include: [{
                     model: User, as: 'user'
                 }],
@@ -77,9 +77,10 @@ async function getChecklist(req, res, next) {
     if (checklist.userId === session_userId) {
         return res.status(200).json({ checklist });
     }
+    console.log(checklist.guest);
 
     // Verificar si el usuario está invitado
-    const guest = checklist.guest.find((guest) => guest.user.id === user_id);
+    const guest = checklist.guest.find((guest) => guest.user.id === session_userId);
     if (guest) {
         return res.status(200).json({ checklist });
     }
@@ -155,17 +156,17 @@ function replaceChecklist(req, res, next) {
             const completeness = req.body.completeness ? req.body.completeness : false;
             object.update({
                 title: title,
-                due_date: due_date||null,
+                due_date: due_date || null,
                 completeness: completeness,
             }).then(obj => {
                 return res.json(obj)
             })
                 .catch(ex => {
-                    console.log("NO ENCONTRO", ex);
+                    console.log("Error", ex);
                     return res.json(ex)
                 })
         }).catch(ex => {
-            console.log("NO ENCONTRO", ex);
+            console.log("Error", ex);
             return res.json(ex)
         });
 }

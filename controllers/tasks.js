@@ -42,13 +42,12 @@ function updateTasks(req, res, next) {
             due_date: due_date,
         }).then(obj => {
             return res.json(obj)
+        }).catch(ex => {
+            console.log("Error", ex);
+            return res.json(ex)
         })
-            .catch(ex => {
-                console.log("NO ENCONTRO", ex);
-                return res.json(ex)
-            })
     }).catch(ex => {
-        console.log("NO ENCONTRO", ex);
+        console.log("Error", ex);
         return res.json(ex)
     });
 }
@@ -58,7 +57,7 @@ function changeCompleteTask(req, res, next) {
     const taskId = req.params.taskId;
     // @todo Check permissions
     Task.findByPk(taskId).then(object => {
-        const is_complete = req.body.is_complete!=undefined ? req.body.is_complete : object.is_complete;
+        const is_complete = req.body.is_complete != undefined ? req.body.is_complete : object.is_complete;
         const completed_at = is_complete ? req.body.completed_at ? req.body.completed_at : object.completed_at : null;
         // const completed_by = req.body.completed_by ? req.body.completed_by : object.completed_by;
         object.update({
@@ -67,13 +66,12 @@ function changeCompleteTask(req, res, next) {
             // completed_by: completed_by
         }).then(obj => {
             return res.json(obj)
+        }).catch(ex => {
+            console.log("Error", ex);
+            return res.json(ex)
         })
-            .catch(ex => {
-                console.log("NO ENCONTRO", ex);
-                return res.json(ex)
-            })
     }).catch(ex => {
-        console.log("NO ENCONTRO", ex);
+        console.log("Error", ex);
         return res.json(ex)
     });
 }

@@ -28,6 +28,7 @@ app.use(expressjwt({ secret: jwtKey, algorithms: ['HS256'] }).unless({
         "/login",
         "/signup",
         "/logout",
+        "/refresh-token",
     ]
 }));
 
