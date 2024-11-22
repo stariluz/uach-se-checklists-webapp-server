@@ -4,21 +4,21 @@ const controller = require('../controllers/checklists');
 
 router.post('/', controller.createChecklist);
 
-router.get('/:user_id/:checklist_id', controller.getChecklist);
+router.get('/:userId/:checklistId', controller.getChecklist);
 
 router.get('/', controller.getChecklists);
 
-router.patch('/:checklist_id', controller.updateChecklist);
+router.patch('/:checklistId', controller.updateChecklist);
 
-router.put('/:checklist_id', controller.replaceChecklist);
+router.put('/:checklistId', controller.replaceChecklist);
 
-router.delete('/:checklist_id', controller.deleteChecklist);
+router.delete('/:checklistId', controller.deleteChecklist);
 
-// router.get('/:checklist_id/tasks', controller.getChecklistTasks);
+// router.get('/:checklistId/tasks', controller.getChecklistTasks);
 
-router.get('/tasks/:checklist_id', controller.getChecklistTasks);
-// router.get('/:checklist_id/tasks-groups', controller.getChecklistTaskGroups);
+router.get('/tasks/:checklistId', controller.getChecklistTasks);
+// router.get('/:checklistId/tasks-groups', controller.getChecklistTaskGroups);
 
-router.get('/tasks-groups/:checklist_id', controller.getChecklistTaskGroups);
+router.get('/tasks-groups/:checklistId', controller.getChecklistTaskGroups);
 
 module.exports = router;

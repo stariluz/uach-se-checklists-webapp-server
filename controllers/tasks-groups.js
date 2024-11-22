@@ -5,13 +5,13 @@ const { where } = require('sequelize');
 function createTaskGroup(req, res, next) {
     //TO DO: Realizar la debida relacion entre checklist_id y el taskGroup
     const title = req.body.title;
-    //const created_at = req.body.created_at;
-    //const updated_at = req.body.updated_at;
+    //const createdAt = req.body.createdAt;
+    //const updatedAt = req.body.updatedAt;
 
     TaskGroup.create({
         title: title
-        //created_at: created_at,
-        //updated_at: updated_at
+        //createdAt: createdAt,
+        //updatedAt: updatedAt
     }).then(object => res.json(object))
     .catch(ex => res.send(ex));
 }
@@ -45,13 +45,13 @@ function updateTaskGroup(req, res, next) {
                         } else {
                             //Aqui en teoria ya encontró el grupo de tareas
                             const title = req.body.title ? req.body.title : taskGroup.body.title;
-                            //const created_at = taskGroup.body.created_at;
-                            //const updated_at = req.body.updated_at ?  req.body.updated_at : taskGroup.body.title;
+                            //const createdAt = taskGroup.body.createdAt;
+                            //const updatedAt = req.body.updatedAt ?  req.body.updatedAt : taskGroup.body.title;
 
                             taskGroup.update({
                                 title: title
-                                //created_at: created_at,
-                                //updated_at: updated_at
+                                //createdAt: createdAt,
+                                //updatedAt: updatedAt
                             })
                             .then(updatedChecklist => res.json(updatedChecklist))
                             .catch(ex => res.send(ex));
@@ -83,13 +83,13 @@ function replaceTaskGroup(req, res, next) {
                         } else {
                             //Aqui en teoria ya encontró el grupo de tareas
                             const title = req.body.title ? req.body.title : "";
-                            //const created_at = taskGroup.body.created_at;
-                            //const updated_at = req.body.updated_at ?  req.body.updated_at : taskGroup.body.title;
+                            //const createdAt = taskGroup.body.createdAt;
+                            //const updatedAt = req.body.updatedAt ?  req.body.updatedAt : taskGroup.body.title;
 
                             taskGroup.update({
                                 title: title
-                                //created_at: created_at,
-                                //updated_at: updated_at
+                                //createdAt: createdAt,
+                                //updatedAt: updatedAt
                             })
                             .then(updatedChecklist => res.json(updatedChecklist))
                             .catch(ex => res.send(ex));

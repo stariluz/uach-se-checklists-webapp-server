@@ -3,87 +3,103 @@ const { Task } = require('../db');
 const { where } = require('sequelize');
 
 function createTask(req, res, next) {
-    //TO DO: Falta definir la relacion de checklist_id, tasks_group_id y complete_by
     const title = req.body.title;
     const due_date = req.body.due_date;
-    const completed_at = req.body.completed_at;
-    //const created_at = req.body.created_at;
-    //const updated_at = req.body.updated_at;
+    const checklistId = req.body.checklistId;
+
+    // @todo Check permissions
 
     Task.create({
-        title : title,
-        due_date : due_date,
-        completed_at : completed_at
-        //created_at: created_at,
-        //updated_at: updated_at
+        title: title,
+        checklistId: checklistId,
+        due_date: due_date,
     }).then(object => res.json(object))
-    .catch(ex => res.send(ex));
+        .catch(ex => res.send(ex));
 }
 
 function getTask(req, res, next) {
-    const task_id = req.params.task_id;
-    Task.findByPk(task_id)  
-            .then(object => res.json(object))
-            .catch(ex => res.send(ex));
+    const taskId = req.params.taskId;
+    // @todo Check permissions
+    Task.findByPk(taskId)
+        .then(object => res.json(object))
+        .catch(ex => res.send(ex));
 }
 
 function getTasks(req, res, next) {
     Task.findAll()
-            .then(object => res.json(object))
-            .catch(ex => res.send(ex));
+        .then(object => res.json(object))
+        .catch(ex => res.send(ex));
 }
 
 function updateTasks(req, res, next) {
-    const task_id = req.params.task_id;
-    Task.findByPk(task_id)
-    .then(object => {
-        const title = req.body.title ? req.body.title: object.body.title ;
-        const due_date = req.body.due_date ? req.body.due_date: object.body.due_date;
-        const complete_at = req.body.complete_at ? req.body.complete_at: object.body.complete_at;
-        //const created_at = object.body.created_at;
-        //const updated_at = req.body.updated_at ? req.body.complete_at: object.body.updated_at;
-
-        // Revisar las fechas de completado, puede haber fallas de la fecha de actualizado
+    const taskId = req.params.taskId;
+    // @todo Check permissions
+    Task.findByPk(taskId).then(object => {
+        const title = req.body.title ? req.body.title : object.title;
+        const due_date = req.body.due_date ? req.body.due_date : object.due_date || null;
         object.update({
             title: title,
             due_date: due_date,
-            complete_at:complete_at
-            //created_at:created_at,
-            //updated_at:updated_at
-        }).then(obj => res.json(obj))
-          .catch(ex => res.send(ex))
-    }).catch(ex => res.send(ex));
+        }).then(obj => {
+            return res.json(obj)
+        })
+            .catch(ex => {
+                console.log("NO ENCONTRO", ex);
+                return res.json(ex)
+            })
+    }).catch(ex => {
+        console.log("NO ENCONTRO", ex);
+        return res.json(ex)
+    });
+}
+
+function updateCompleteTask(req, res, next) {
+    const taskId = req.params.taskId;
+    Task.findByPk(taskId)
+        .then(object => {
+            const is_complete = req.body.is_complete ? req.body.is_complete : object.is_complete;
+            const completed_at = is_complete ? req.body.completed_at ? req.body.completed_at : object.completed_at : null;
+            // const completed_by = req.body.completed_by ? req.body.completed_by : object.completed_by;
+            object.update({
+                is_complete: is_complete,
+                completed_at: completed_at,
+                // completed_by: completed_by
+                //createdAt:createdAt,
+                //updatedAt:updatedAt
+            }).then(obj => res.json(obj))
+                .catch(ex => res.send(ex))
+        }).catch(ex => res.send(ex));
 }
 
 
 function replaceTasks(req, res, next) {
-    const task_id = req.params.task_id;
-    Task.findByPk(task_id)
-    .then(object => {
-        const title = req.body.title ? req.body.title : "";
-        const due_date = req.body.due_date ? req.body.due_date : "";;
-        const complete_at = req.body.complete_at ? req.body.complete_at : "";;
-        //const created_at = object.body.created_at ;
-        //const updated_at = req.body.updated_at ? req.body.updated_at : object.body.updated_at;
+    const taskId = req.params.taskId;
+    Task.findByPk(taskId)
+        .then(object => {
+            const title = req.body.title ? req.body.title : "";
+            const due_date = req.body.due_date ? req.body.due_date : "";;
+            const complete_at = req.body.complete_at ? req.body.complete_at : "";;
+            //const createdAt = object.createdAt ;
+            //const updatedAt = req.body.updatedAt ? req.body.updatedAt : object.updatedAt;
 
-        // Revisar las fechas de completado, puede haber fallas de la fecha de actualizado
-        object.update({
-            title: title,
-            due_date: due_date,
-            complete_at:complete_at
-            //created_at:created_at,
-            //updated_at:updated_at
-        }).then(obj => res.json(obj))
-          .catch(ex => res.send(ex))
-    }).catch(ex => res.send(ex));
+            // Revisar las fechas de completado, puede haber fallas de la fecha de actualizado
+            object.update({
+                title: title,
+                due_date: due_date,
+                complete_at: complete_at
+                //createdAt:createdAt,
+                //updatedAt:updatedAt
+            }).then(obj => res.json(obj))
+                .catch(ex => res.send(ex))
+        }).catch(ex => res.send(ex));
 }
 
 function deleteTask(req, res, next) {
-    const task_id = req.params.Task_id;
-    Task.destroy({ where: {id: task_id}})
-    .then(object => res.json(object))
-    .catch(ex => res.send(ex));
+    const taskId = req.params.taskId;
+    Task.destroy({ where: { id: taskId } })
+        .then(object => res.json(object))
+        .catch(ex => res.send(ex));
 }
 
 
-module.exports = {createTask, getTask, getTasks, updateTasks, replaceTasks, deleteTask}
+module.exports = { createTask, getTask, getTasks, updateTasks, replaceTasks, deleteTask }

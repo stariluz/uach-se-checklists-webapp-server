@@ -1,16 +1,15 @@
 const express = require('express');
 const { ChecklistGuest,Checklist, User} = require('../db');
 const { where } = require('sequelize');
-const checklistGuest = require('../models/checklist-guest');
 
 function createChecklistGuest(req, res, next) {
     // TO DO: Definir las relaciones entre el checklistGuest, su userid y rolid 
-    // const created_at = req.body.created_at;
-    // const updated_at = req.body.updated_at;
+    // const createdAt = req.body.createdAt;
+    // const updatedAt = req.body.updatedAt;
 
     ChecklistGuest.create({
-        // created_at: created_at,
-        // updated_at: updated_at
+        // createdAt: createdAt,
+        // updatedAt: updatedAt
     }).then(object => res.json(object))
     .catch(ex => res.send(ex));
 }
@@ -59,12 +58,12 @@ function updateChecklistGuest(req, res, next) {
                                                     res.status(404).json({ error: "ChecklistGuest no encontrado" });
                                                 } else {
                                                     // Actualizar ChecklistGuest
-                                                    // const created_at = checklistGuest.created_at;
-                                                    // const updated_at = req.body.updated_at ? req.body.updated_at : checklistGuest.body.updated_at;
+                                                    // const createdAt = checklistGuest.createdAt;
+                                                    // const updatedAt = req.body.updatedAt ? req.body.updatedAt : checklistGuest.body.updatedAt;
 
                                                     checklistGuest.update({
-                                                        // created_at: created_at,
-                                                        // updated_at: updated_at
+                                                        // createdAt: createdAt,
+                                                        // updatedAt: updatedAt
                                                     })
                                                     .then(updatedChecklistGuest => res.json(updatedChecklistGuest))
                                                     .catch(ex => res.send(ex));
@@ -116,13 +115,13 @@ function replaceChecklistGuest(req, res, next) {
                                                 } else {
                                                     // Actualizar ChecklistGuest
                                                     const title = req.body.title ? checklistGuest.title : "";
-                                                    const created_at = checklistGuest.created_at;
-                                                    const updated_at = req.body.updated_at ? req.body.updated_at : checklistGuest.body.updated_at;
+                                                    const createdAt = checklistGuest.createdAt;
+                                                    const updatedAt = req.body.updatedAt ? req.body.updatedAt : checklistGuest.body.updatedAt;
 
                                                     checklistGuest.update({
                                                         title: title,
-                                                        created_at: created_at,
-                                                        updated_at: updated_at
+                                                        createdAt: createdAt,
+                                                        updatedAt: updatedAt
                                                     })
                                                     .then(updatedChecklistGuest => res.json(updatedChecklistGuest))
                                                     .catch(ex => res.send(ex));
