@@ -8,6 +8,6 @@ router.get('/:checklistId', controller.getChecklistGuests);
 
 router.patch('/:checklistGuestId', controller.updateChecklistGuest);
 
-router.delete('/:checklistGuestId', controller.deleteChecklistGuest);
+router.delete('/:userId/:checklistId', controller.deleteChecklistGuest);
 
 module.exports = router;

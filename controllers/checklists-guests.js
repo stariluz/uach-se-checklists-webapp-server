@@ -74,10 +74,17 @@ function updateChecklistGuest(req, res, next) {
 
 function deleteChecklistGuest(req, res, next) {
     // @todo Check permissions
-    const checklistGuestId = req.params.checklistGuestId;
-    ChecklistGuest.destroy({ where: { id: checklistGuestId } })
-        .then(object => res.json(object))
-        .catch(ex => res.send(ex));
+    const checklistId = req.params.checklistId;
+    const userId = req.params.userId;
+    ChecklistGuest.destroy({
+        where: { checklistId: checklistId, userId: userId }
+    }).then(obj => {
+        console.log(obj);
+        return res.json(obj)
+    }).catch(ex => {
+        console.log("Error", ex);
+        return res.json(ex)
+    })
 }
 
 
