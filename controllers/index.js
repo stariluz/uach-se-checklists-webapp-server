@@ -15,26 +15,17 @@ async function login(req, res, next) {
         const user = await User.findOne({ where: { email: email } });
 
         if (user) {
-            const result = await bcrypt.compare(google_token, user.google_token);
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
 
-            if (result) {
-                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
-
-                return res.status(200).json({
-                    msg: "Sesión iniciada correctamente",
-                    token: token,
-                    user: {
-                        id: user.id,
-                        picture_url: user.picture_url,
-                        email: user.email,
-                    }
-                });
-            } else {
-                return res.status(401).json({
-                    msg: "Este usuario creo cuenta con otra cuenta de google",
-                    obj: null
-                });
-            }
+            return res.status(200).json({
+                msg: "Sesión iniciada correctamente",
+                token: token,
+                user: {
+                    id: user.id,
+                    picture_url: user.picture_url,
+                    email: user.email,
+                }
+            });
         } else {
             console.error("Usuario no encontrado");
             return res.status(404).json({
@@ -126,7 +117,7 @@ const refreshToken = async (req, res) => {
     const userId = decoded.id; // Asume que el ID del usuario está en el payload del token.
     const user = await User.findByPk(userId);
     if (!user) return res.sendStatus(403); //Forbidden 
-    
+
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '14 days' });
     return res.status(200).json({
         msg: "Cuenta creada correctamente",
