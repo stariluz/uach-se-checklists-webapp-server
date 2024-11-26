@@ -41,6 +41,7 @@ DB_PASSWORD=contrasena_de_root
 DB_HOST=localhost
 DB_PORT=3306
 DB_DIALECT=mysql
+JWT_SECRET='acf9a330598742841112631523211232'
 ```
 ```sh
 npm run start
